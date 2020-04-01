@@ -46,8 +46,8 @@ namespace FunctionFlow.NET
             EventGridClient client = new EventGridClient(topicCredentials);
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-
+            dynamic ddata = JsonConvert.DeserializeObject(requestBody);
+            var data = (ddata!=null)?ddata:"i got no message content";
             EventGridEvent mess = GetEvent(data);
             List<EventGridEvent> eventsList = new List<EventGridEvent>();
             eventsList.Add(mess);
@@ -65,6 +65,10 @@ namespace FunctionFlow.NET
             EventGridEvent temp = new EventGridEvent();
             temp.Id = Guid.NewGuid().ToString();
             temp.Data = data;
+            temp.Subject = "test1";
+            temp.EventTime = DateTime.Now;
+            temp.EventType = "Function.Flow.2F1";
+            temp.DataVersion = "2.0";
             return temp;
         }
 
