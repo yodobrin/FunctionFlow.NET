@@ -65,6 +65,10 @@ namespace FunctionFlow.NET
             EventGridEvent temp = new EventGridEvent();
             temp.Id = Guid.NewGuid().ToString();
             temp.Data = data;
+            temp.Subject = "test1";
+            temp.EventTime = DateTime.Now;
+            temp.EventType = "Function.Flow.2F1";
+            temp.DataVersion = "2.0";
             return temp;
         }
 
