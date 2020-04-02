@@ -1,0 +1,12 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "<your storage account connection string>",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "EG_START_EP": "<your first topic end point>",
+        "EG_SECOND_EP": "<your second topic end point>",
+        "EG_START_KEY": "<your first topic key>",
+        "EG_SECOND_KEY": "<your first topic key>",
+        "SINK_CONTAINER": "<your sink container>"
+    }
+}
