@@ -22,13 +22,15 @@ using Microsoft.Extensions.Logging;
 using Azure.Storage.Blobs;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+
 
 namespace FunctionFlow.NET
 {
     public static class F2
     {
         [FunctionName("F2")]
-        public static async void Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
+        public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
         {
             
             string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
@@ -42,7 +44,13 @@ namespace FunctionFlow.NET
             BlobClient blobClient = containerClient.GetBlobClient(filename);
             System.IO.MemoryStream stream = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(content));
 
-            await blobClient.UploadAsync(stream);
+            try{
+                await blobClient.UploadAsync(stream);        
+            }catch(Exception ex)
+            {
+                log.LogInformation($"Exception found {ex.Message}");
+            }
+                
 
             log.LogInformation($"F2 was called and saved a blob {filename}");
         }

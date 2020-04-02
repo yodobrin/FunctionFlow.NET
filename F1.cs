@@ -20,15 +20,17 @@ using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.EventGrid;
-// using Microsoft.Azure.EventGrid.Models;
+
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FunctionFlow.NET
 {
     public static class F1
     {
         [FunctionName("F1")]
-        public static async void Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
+        public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
         {
             string message = $"F1 got message {eventGridEvent.Data.ToString()}";
             log.LogInformation(message);
@@ -45,16 +47,24 @@ namespace FunctionFlow.NET
 
             List<EventGridEvent> eventsList = new List<EventGridEvent>();
             eventsList.Add(mess);
-
-            await client.PublishEventsAsync(topicHostname,eventsList);
-
+            try{
+                await client.PublishEventsAsync(topicHostname,eventsList);
+            }catch(Exception ex)
+            {
+               log.LogInformation($"Exception found {ex.Message}"); 
+            }
+            
         }
 
         private static EventGridEvent GetEvent(dynamic data)
         {
             EventGridEvent temp = new EventGridEvent();
             temp.Id = Guid.NewGuid().ToString();
-            temp.Data = data;
+            temp.Data = data;        
+            temp.Subject = "F1";
+            temp.EventTime = DateTime.Now;
+            temp.EventType = "Function.Flow.2F2";
+            temp.DataVersion = "2.0";            
             return temp;
         }
     }
