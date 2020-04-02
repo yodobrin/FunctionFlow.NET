@@ -45,6 +45,9 @@ namespace FunctionFlow.NET
             TopicCredentials topicCredentials = new TopicCredentials(topicKey);
             EventGridClient client = new EventGridClient(topicCredentials);
 
+            // perform initial procssing
+
+            // send message to the next handler
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic ddata = JsonConvert.DeserializeObject(requestBody);
             var data = (ddata!=null)?ddata:"i got no message content";

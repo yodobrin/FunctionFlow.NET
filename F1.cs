@@ -38,6 +38,9 @@ namespace FunctionFlow.NET
             string topicEndpoint  = Environment.GetEnvironmentVariable("EG_SECOND_EP");
             string topicKey  = Environment.GetEnvironmentVariable("EG_SECOND_KEY");
 
+            // do some procssing 
+
+            // pass notification to the next handler
             EventGridEvent mess = GetEvent(message);
 
             // get a connection
